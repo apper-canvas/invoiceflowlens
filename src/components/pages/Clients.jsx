@@ -41,10 +41,10 @@ useEffect(() => {
 
     // Apply search filter
     if (searchQuery) {
-      filtered = filtered.filter(client =>
-        client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        client.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        client.phone?.toLowerCase().includes(searchQuery.toLowerCase())
+filtered = filtered.filter(client =>
+        (client.CompanyName_c || client.name || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (client.EmailAddress_c || client.email || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (client.PhoneNumber_c || client.phone || "")?.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -204,7 +204,7 @@ const handleSearchChange = (e) => {
             <div>
               <p className="text-sm text-gray-600 uppercase tracking-wide font-medium">Active Clients</p>
               <p className="text-2xl font-bold bg-gradient-to-r from-success-600 to-success-700 bg-clip-text text-transparent mt-1">
-                {clients.filter(c => c.invoiceCount > 0).length}
+{clients.filter(c => (c.InvoiceCount_c || c.invoiceCount) > 0).length}
               </p>
             </div>
             <div className="w-12 h-12 bg-gradient-to-br from-success-500 to-success-600 rounded-lg flex items-center justify-center">
@@ -218,7 +218,7 @@ const handleSearchChange = (e) => {
             <div>
               <p className="text-sm text-gray-600 uppercase tracking-wide font-medium">New Clients</p>
               <p className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-700 bg-clip-text text-transparent mt-1">
-                {clients.filter(c => c.invoiceCount === 0).length}
+{clients.filter(c => (c.InvoiceCount_c || c.invoiceCount) === 0).length}
               </p>
             </div>
             <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
@@ -232,7 +232,7 @@ const handleSearchChange = (e) => {
             <div>
               <p className="text-sm text-gray-600 uppercase tracking-wide font-medium">Total Invoices</p>
               <p className="text-2xl font-bold bg-gradient-to-r from-secondary-600 to-secondary-700 bg-clip-text text-transparent mt-1">
-                {clients.reduce((sum, c) => sum + (c.invoiceCount || 0), 0)}
+{clients.reduce((sum, c) => sum + (c.InvoiceCount_c || c.invoiceCount || 0), 0)}
               </p>
             </div>
             <div className="w-12 h-12 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-lg flex items-center justify-center">

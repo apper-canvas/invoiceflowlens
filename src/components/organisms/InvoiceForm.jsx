@@ -6,14 +6,14 @@ import Select from "@/components/atoms/Select";
 import ApperIcon from "@/components/ApperIcon";
 
 const InvoiceForm = ({ invoice, clients = [], onSubmit, onCancel }) => {
-  const [formData, setFormData] = useState({
-    invoiceNumber: "",
-    clientId: "",
-    issueDate: new Date().toISOString().split("T")[0],
-    dueDate: "",
-    items: [{ description: "", quantity: 1, rate: 0, amount: 0 }],
-    taxRate: 0,
-    notes: ""
+const [formData, setFormData] = useState({
+    InvoiceNumber_c: "",
+    Client_c: "",
+    IssueDate_c: new Date().toISOString().split("T")[0],
+    DueDate_c: "",
+    Items_c: [{ description: "", quantity: 1, rate: 0, amount: 0 }],
+    TaxRate_c: 0,
+    Notes_c: ""
   });
 
   const [totals, setTotals] = useState({
@@ -23,15 +23,15 @@ const InvoiceForm = ({ invoice, clients = [], onSubmit, onCancel }) => {
   });
 
   useEffect(() => {
-    if (invoice) {
+if (invoice) {
       setFormData({
-        invoiceNumber: invoice.invoiceNumber || "",
-        clientId: invoice.clientId || "",
-        issueDate: invoice.issueDate ? new Date(invoice.issueDate).toISOString().split("T")[0] : "",
-        dueDate: invoice.dueDate ? new Date(invoice.dueDate).toISOString().split("T")[0] : "",
-        items: invoice.items || [{ description: "", quantity: 1, rate: 0, amount: 0 }],
-        taxRate: invoice.taxRate || 0,
-        notes: invoice.notes || ""
+        InvoiceNumber_c: invoice.InvoiceNumber_c || invoice.invoiceNumber || "",
+        Client_c: invoice.Client_c?.Id || invoice.clientId || "",
+        IssueDate_c: invoice.IssueDate_c ? new Date(invoice.IssueDate_c).toISOString().split("T")[0] : invoice.issueDate ? new Date(invoice.issueDate).toISOString().split("T")[0] : "",
+        DueDate_c: invoice.DueDate_c ? new Date(invoice.DueDate_c).toISOString().split("T")[0] : invoice.dueDate ? new Date(invoice.dueDate).toISOString().split("T")[0] : "",
+        Items_c: typeof invoice.Items_c === 'string' ? JSON.parse(invoice.Items_c) : invoice.Items_c || invoice.items || [{ description: "", quantity: 1, rate: 0, amount: 0 }],
+        TaxRate_c: invoice.TaxRate_c || invoice.taxRate || 0,
+        Notes_c: invoice.Notes_c || invoice.notes || ""
       });
     }
   }, [invoice]);
@@ -91,11 +91,11 @@ const InvoiceForm = ({ invoice, clients = [], onSubmit, onCancel }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const invoiceData = {
-      ...formData,
-      subtotal: totals.subtotal,
-      taxAmount: totals.taxAmount,
-      total: totals.total,
-      status: invoice ? invoice.status : "draft"
+...formData,
+      SubtotalAmount_c: totals.subtotal,
+      TaxAmount_c: totals.taxAmount,
+      TotalAmount_c: totals.total,
+      Status_c: invoice ? (invoice.Status_c || invoice.status) : "draft"
     };
     onSubmit(invoiceData);
   };
@@ -124,8 +124,8 @@ const InvoiceForm = ({ invoice, clients = [], onSubmit, onCancel }) => {
                   required
                 >
                   <option value="">Select Client</option>
-                  {clients.map(client => (
-                    <option key={client.Id} value={client.Id}>{client.name}</option>
+{clients.map(client => (
+                    <option key={client.Id} value={client.Id}>{client.CompanyName_c || client.name}</option>
                   ))}
                 </Select>
                 <Input

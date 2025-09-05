@@ -29,14 +29,14 @@ const Dashboard = () => {
   }, []);
 
   const calculateMetrics = () => {
-    const totalRevenue = invoices.reduce((sum, inv) => sum + (inv.total || 0), 0);
-    const paidInvoices = invoices.filter(inv => inv.status === "paid");
-    const pendingInvoices = invoices.filter(inv => inv.status === "sent");
-    const overdueInvoices = invoices.filter(inv => inv.status === "overdue");
-    
-    const paidAmount = paidInvoices.reduce((sum, inv) => sum + (inv.total || 0), 0);
-    const pendingAmount = pendingInvoices.reduce((sum, inv) => sum + (inv.total || 0), 0);
-    const overdueAmount = overdueInvoices.reduce((sum, inv) => sum + (inv.total || 0), 0);
+const totalRevenue = invoices.reduce((sum, inv) => sum + (inv.TotalAmount_c || inv.total || 0), 0);
+    const paidInvoices = invoices.filter(inv => (inv.Status_c || inv.status) === "paid");
+    const pendingInvoices = invoices.filter(inv => (inv.Status_c || inv.status) === "sent");
+    const overdueInvoices = invoices.filter(inv => (inv.Status_c || inv.status) === "overdue");
+
+    const paidAmount = paidInvoices.reduce((sum, inv) => sum + (inv.TotalAmount_c || inv.total || 0), 0);
+    const pendingAmount = pendingInvoices.reduce((sum, inv) => sum + (inv.TotalAmount_c || inv.total || 0), 0);
+    const overdueAmount = overdueInvoices.reduce((sum, inv) => sum + (inv.TotalAmount_c || inv.total || 0), 0);
 
     return {
       totalRevenue,

@@ -59,23 +59,23 @@ const InvoiceTable = ({ invoices = [], onEdit, onDelete, onView }) => {
                 className="hover:bg-gray-50 transition-colors duration-150"
               >
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="font-medium text-gray-900">
-                    #{invoice.invoiceNumber}
+<div className="font-medium text-gray-900">
+                    #{invoice.InvoiceNumber_c || invoice.invoiceNumber}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-gray-900">{invoice.clientName}</div>
+<div className="text-gray-900">{invoice.Client_c?.Name || invoice.clientName}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-lg font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                    ${invoice.total?.toLocaleString()}
+${(invoice.TotalAmount_c || invoice.total)?.toLocaleString()}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <StatusBadge status={invoice.status} />
+<StatusBadge status={invoice.Status_c || invoice.status} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                  {format(new Date(invoice.issueDate), "MMM dd, yyyy")}
+{format(new Date(invoice.IssueDate_c || invoice.issueDate), "MMM dd, yyyy")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex items-center space-x-2">

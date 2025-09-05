@@ -48,31 +48,31 @@ const Transactions = () => {
     // Apply search filter
     if (searchQuery) {
       filtered = filtered.filter(transaction =>
-        transaction.transactionNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        transaction.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        transaction.clientName.toLowerCase().includes(searchQuery.toLowerCase())
+(transaction.TransactionNumber_c || transaction.transactionNumber || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (transaction.Description_c || transaction.description || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (transaction.Client_c?.Name || transaction.clientName || "").toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
     // Apply type filter
     if (typeFilter !== "all") {
-      filtered = filtered.filter(transaction => transaction.type === typeFilter);
+filtered = filtered.filter(transaction => (transaction.Type_c || transaction.type) === typeFilter);
     }
 
     // Apply status filter
     if (statusFilter !== "all") {
-      filtered = filtered.filter(transaction => transaction.status === statusFilter);
+filtered = filtered.filter(transaction => (transaction.Status_c || transaction.status) === statusFilter);
     }
 
     // Apply category filter
     if (categoryFilter !== "all") {
-      filtered = filtered.filter(transaction => transaction.category === categoryFilter);
+filtered = filtered.filter(transaction => (transaction.Category_c || transaction.category) === categoryFilter);
     }
 
     // Apply date range filter
     if (fromDate || toDate) {
       filtered = filtered.filter(transaction => {
-        const transactionDate = new Date(transaction.date);
+const transactionDate = new Date(transaction.Date_c || transaction.date);
         const from = fromDate ? new Date(fromDate) : null;
         const to = toDate ? new Date(toDate) : null;
         
@@ -160,7 +160,7 @@ const Transactions = () => {
   }
 
   const getUniqueCategories = () => {
-    const categories = [...new Set(transactions.map(t => t.category))];
+const categories = [...new Set(transactions.map(t => t.Category_c || t.category))];
     return categories.sort();
   };
 

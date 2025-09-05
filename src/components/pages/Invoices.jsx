@@ -43,21 +43,21 @@ useEffect(() => {
 
     // Apply search filter
     if (searchQuery) {
-      filtered = filtered.filter(invoice =>
-        invoice.invoiceNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        invoice.clientName.toLowerCase().includes(searchQuery.toLowerCase())
+filtered = filtered.filter(invoice =>
+        (invoice.InvoiceNumber_c || invoice.invoiceNumber || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (invoice.Client_c?.Name || invoice.clientName || "").toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
     // Apply status filter
     if (statusFilter !== "all") {
-      filtered = filtered.filter(invoice => invoice.status === statusFilter);
+filtered = filtered.filter(invoice => (invoice.Status_c || invoice.status) === statusFilter);
     }
 
     // Apply date range filter
     if (fromDate || toDate) {
       filtered = filtered.filter(invoice => {
-        const invoiceDate = new Date(invoice.issueDate);
+const invoiceDate = new Date(invoice.IssueDate_c || invoice.issueDate);
         const from = fromDate ? new Date(fromDate) : null;
         const to = toDate ? new Date(toDate) : null;
         

@@ -74,40 +74,40 @@ const TransactionTable = ({ transactions = [], onEdit, onDelete, onView }) => {
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="font-medium text-gray-900">
-                    #{transaction.transactionNumber}
+#{transaction.TransactionNumber_c || transaction.transactionNumber}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center space-x-2">
                     <ApperIcon 
-                      name={getTypeIcon(transaction.type)} 
-                      size={16} 
-                      className={getTypeColor(transaction.type)}
+name={getTypeIcon(transaction.Type_c || transaction.type)} 
+                      size={20} 
+                      className="text-gray-500"
                     />
                     <span className={`capitalize text-sm font-medium ${getTypeColor(transaction.type)}`}>
-                      {transaction.type}
+{transaction.Type_c || transaction.type}
                     </span>
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <div className="text-gray-900 max-w-xs truncate">{transaction.description}</div>
-                  <div className="text-xs text-gray-500">{transaction.clientName}</div>
+<div className="text-gray-900 max-w-xs truncate">{transaction.Description_c || transaction.description}</div>
+                  <div className="text-xs text-gray-500">{transaction.Client_c?.Name || transaction.clientName}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className={`text-lg font-bold ${getTypeColor(transaction.type)}`}>
-                    {transaction.type === 'income' ? '+' : '-'}${transaction.amount?.toLocaleString()}
+<div className={`text-lg font-bold ${getTypeColor(transaction.Type_c || transaction.type)}`}>
+                    {(transaction.Type_c || transaction.type) === 'income' ? '+' : '-'}${(transaction.Amount_c || transaction.amount)?.toLocaleString()}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">
-                    {transaction.category}
+{transaction.Category_c || transaction.category}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                  {format(new Date(transaction.date), "MMM dd, yyyy")}
+{format(new Date(transaction.Date_c || transaction.date), "MMM dd, yyyy")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <StatusBadge status={transaction.status} />
+<StatusBadge status={transaction.Status_c || transaction.status} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex items-center space-x-2">

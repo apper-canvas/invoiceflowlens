@@ -56,30 +56,30 @@ const ClientTable = ({ clients = [], onEdit, onDelete, onView }) => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center mr-4">
-                      <span className="text-white font-medium text-sm">
-                        {client.name.charAt(0).toUpperCase()}
+<span className="text-white font-medium text-sm">
+                        {(client.CompanyName_c || client.name)?.charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <div>
-                      <div className="font-medium text-gray-900">{client.name}</div>
-                      {client.taxId && (
-                        <div className="text-sm text-gray-500">Tax ID: {client.taxId}</div>
+                      <div className="font-medium text-gray-900">{client.CompanyName_c || client.name}</div>
+                      {(client.TaxID_c || client.taxId) && (
+                        <div className="text-sm text-gray-500">Tax ID: {client.TaxID_c || client.taxId}</div>
                       )}
                     </div>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-gray-900">{client.email}</div>
-                  {client.phone && (
-                    <div className="text-sm text-gray-500">{client.phone}</div>
+<div className="text-gray-900">{client.EmailAddress_c || client.email}</div>
+                  {(client.PhoneNumber_c || client.phone) && (
+                    <div className="text-sm text-gray-500">{client.PhoneNumber_c || client.phone}</div>
                   )}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                  {client.address || "No address provided"}
+<td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                  {client.Address_c || client.address || "No address provided"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="text-lg font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                    {client.invoiceCount || 0}
+<span className="text-lg font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+                    {client.InvoiceCount_c || client.invoiceCount || 0}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
