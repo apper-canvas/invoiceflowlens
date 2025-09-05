@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from "react";
-import ClientTable from "@/components/organisms/ClientTable";
-import Button from "@/components/atoms/Button";
-import SearchBar from "@/components/molecules/SearchBar";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import ApperIcon from "@/components/ApperIcon";
+import React, { useEffect, useState } from "react";
 import { clientService } from "@/services/api/clientService";
 import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import ClientTable from "@/components/organisms/ClientTable";
+import SearchBar from "@/components/molecules/SearchBar";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import Invoices from "@/components/pages/Invoices";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
 
 const Clients = () => {
   const [clients, setClients] = useState([]);
   const [filteredClients, setFilteredClients] = useState([]);
-  const [loading, setLoading] = useState(true);
+const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [statusFilter, setStatusFilter] = useState("all");
   const loadClients = async () => {
     try {
       setError(null);
@@ -34,20 +36,48 @@ const Clients = () => {
     loadClients();
   }, []);
 
-  useEffect(() => {
-    if (searchQuery) {
-      const filtered = clients.filter(client =>
-        client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        client.email.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredClients(filtered);
-    } else {
-      setFilteredClients(clients);
-    }
-  }, [clients, searchQuery]);
+useEffect(() => {
+    let filtered = [...clients];
 
-  const handleSearchChange = (e) => {
+    // Apply search filter
+    if (searchQuery) {
+      filtered = filtered.filter(client =>
+        client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        client.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        client.phone?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Apply status filter based on invoice count
+    if (statusFilter !== "all") {
+      filtered = filtered.filter(client => {
+        const invoiceCount = client.invoiceCount || 0;
+        switch (statusFilter) {
+          case "active":
+            return invoiceCount >= 2;
+          case "new":
+            return invoiceCount === 1;
+          case "inactive":
+            return invoiceCount === 0;
+          default:
+            return true;
+        }
+      });
+    }
+
+    setFilteredClients(filtered);
+  }, [clients, searchQuery, statusFilter]);
+const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleStatusFilter = (e) => {
+    setStatusFilter(e.target.value);
+  };
+
+  const handleClearFilters = () => {
+    setSearchQuery("");
+    setStatusFilter("all");
   };
 
   const handleAddClient = () => {
@@ -87,7 +117,7 @@ const Clients = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
+<div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
         <div>
@@ -109,40 +139,62 @@ const Clients = () => {
         </div>
       </div>
 
-      {/* Search and Stats */}
+      {/* Search and Filter Controls */}
       <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
+        <div className="space-y-4">
+          {/* Search Bar */}
+          <div>
             <SearchBar
-              placeholder="Search clients by name or email..."
+              placeholder="Search clients by name, email, or phone..."
               value={searchQuery}
               onChange={handleSearchChange}
               className="w-full"
             />
           </div>
           
-          <div className="flex items-center justify-center lg:justify-end">
-            <div className="text-center lg:text-right">
-              <p className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                {filteredClients.length}
-              </p>
-              <p className="text-sm text-gray-600">
-                {searchQuery ? "Found" : "Total"} Clients
-              </p>
+          {/* Filter Controls */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <Select
+                label="Filter by Client Status"
+                value={statusFilter}
+                onChange={handleStatusFilter}
+              >
+                <option value="all">All Clients</option>
+                <option value="active">Active (2+ invoices)</option>
+                <option value="new">New (1 invoice)</option>
+                <option value="inactive">Inactive (0 invoices)</option>
+              </Select>
+            </div>
+            <div className="md:col-span-2 flex items-end">
+              <Button
+                variant="outline"
+                onClick={handleClearFilters}
+                className="w-full md:w-auto"
+              >
+                <ApperIcon name="X" size={16} className="mr-2" />
+                Clear Filters
+              </Button>
             </div>
           </div>
         </div>
         
-        {searchQuery && (
-          <div className="mt-4 flex items-center space-x-2">
-            <span className="text-sm text-gray-600">
-              Showing {filteredClients.length} of {clients.length} clients
-            </span>
-            <span className="px-2 py-1 bg-primary-100 text-primary-800 rounded text-sm">
+        {/* Filter Summary */}
+        <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-600">
+          <span className="font-medium">
+            Showing {filteredClients.length} of {clients.length} clients
+          </span>
+          {searchQuery && (
+            <span className="px-2 py-1 bg-primary-100 text-primary-800 rounded">
               Search: "{searchQuery}"
             </span>
-          </div>
-        )}
+          )}
+          {statusFilter !== "all" && (
+            <span className="px-2 py-1 bg-secondary-100 text-secondary-800 rounded capitalize">
+              Status: {statusFilter === "active" ? "Active" : statusFilter === "new" ? "New" : "Inactive"}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Client Stats Cards */}

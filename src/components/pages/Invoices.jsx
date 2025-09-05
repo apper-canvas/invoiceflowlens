@@ -12,13 +12,14 @@ import { toast } from "react-toastify";
 
 const Invoices = () => {
   const navigate = useNavigate();
-  const [invoices, setInvoices] = useState([]);
+const [invoices, setInvoices] = useState([]);
   const [filteredInvoices, setFilteredInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
   const loadInvoices = async () => {
     try {
       setError(null);
@@ -37,8 +38,7 @@ const Invoices = () => {
   useEffect(() => {
     loadInvoices();
   }, []);
-
-  useEffect(() => {
+useEffect(() => {
     let filtered = [...invoices];
 
     // Apply search filter
@@ -54,15 +54,48 @@ const Invoices = () => {
       filtered = filtered.filter(invoice => invoice.status === statusFilter);
     }
 
-    setFilteredInvoices(filtered);
-  }, [invoices, searchQuery, statusFilter]);
+    // Apply date range filter
+    if (fromDate || toDate) {
+      filtered = filtered.filter(invoice => {
+        const invoiceDate = new Date(invoice.issueDate);
+        const from = fromDate ? new Date(fromDate) : null;
+        const to = toDate ? new Date(toDate) : null;
+        
+        if (from && to) {
+          return invoiceDate >= from && invoiceDate <= to;
+        } else if (from) {
+          return invoiceDate >= from;
+        } else if (to) {
+          return invoiceDate <= to;
+        }
+        return true;
+      });
+    }
 
-  const handleSearchChange = (e) => {
+    setFilteredInvoices(filtered);
+  }, [invoices, searchQuery, statusFilter, fromDate, toDate]);
+
+const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
   const handleStatusFilter = (e) => {
     setStatusFilter(e.target.value);
+  };
+
+  const handleFromDateChange = (e) => {
+    setFromDate(e.target.value);
+  };
+
+  const handleToDateChange = (e) => {
+    setToDate(e.target.value);
+  };
+
+  const clearFilters = () => {
+    setSearchQuery("");
+    setStatusFilter("all");
+    setFromDate("");
+    setToDate("");
   };
 
   const handleNewInvoice = () => {
@@ -125,9 +158,10 @@ const Invoices = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="md:col-span-2">
+<div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
+        <div className="space-y-4">
+          {/* Search Bar */}
+          <div>
             <SearchBar
               placeholder="Search by invoice number or client name..."
               value={searchQuery}
@@ -135,24 +169,59 @@ const Invoices = () => {
               className="w-full"
             />
           </div>
-          <div>
-            <Select
-              label="Filter by Status"
-              value={statusFilter}
-              onChange={handleStatusFilter}
-            >
-              <option value="all">All Statuses</option>
-              <option value="draft">Draft</option>
-              <option value="sent">Sent</option>
-              <option value="paid">Paid</option>
-              <option value="overdue">Overdue</option>
-            </Select>
+          
+          {/* Filter Controls */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <Select
+                label="Filter by Status"
+                value={statusFilter}
+                onChange={handleStatusFilter}
+              >
+                <option value="all">All Statuses</option>
+                <option value="draft">Draft</option>
+                <option value="sent">Sent</option>
+                <option value="paid">Paid</option>
+                <option value="overdue">Overdue</option>
+              </Select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                From Date
+              </label>
+              <input
+                type="date"
+                value={fromDate}
+                onChange={handleFromDateChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white text-gray-900"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                To Date
+              </label>
+              <input
+                type="date"
+                value={toDate}
+                onChange={handleToDateChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white text-gray-900"
+              />
+            </div>
+            <div className="flex items-end">
+              <Button
+                variant="outline"
+                onClick={clearFilters}
+                className="w-full"
+              >
+                <ApperIcon name="X" size={16} className="mr-2" />
+                Clear Filters
+              </Button>
+            </div>
           </div>
         </div>
-        
-        {/* Filter Summary */}
-        <div className="mt-4 flex items-center space-x-4 text-sm text-gray-600">
-          <span>
+{/* Filter Summary */}
+        <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-600">
+          <span className="font-medium">
             Showing {filteredInvoices.length} of {invoices.length} invoices
           </span>
           {searchQuery && (
@@ -163,6 +232,16 @@ const Invoices = () => {
           {statusFilter !== "all" && (
             <span className="px-2 py-1 bg-secondary-100 text-secondary-800 rounded capitalize">
               Status: {statusFilter}
+            </span>
+          )}
+          {fromDate && (
+            <span className="px-2 py-1 bg-warning-100 text-warning-800 rounded">
+              From: {new Date(fromDate).toLocaleDateString()}
+            </span>
+          )}
+          {toDate && (
+            <span className="px-2 py-1 bg-warning-100 text-warning-800 rounded">
+              To: {new Date(toDate).toLocaleDateString()}
             </span>
           )}
         </div>
