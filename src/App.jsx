@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import Layout from "@/components/organisms/Layout";
 import Dashboard from "@/components/pages/Dashboard";
 import Invoices from "@/components/pages/Invoices";
+import Transactions from "@/components/pages/Transactions";
 import Clients from "@/components/pages/Clients";
 import Settings from "@/components/pages/Settings";
 
@@ -15,7 +16,8 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="invoices" element={<Invoices />} />
-            <Route path="clients" element={<Clients />} />
+<Route path="clients" element={<Clients />} />
+            <Route path="transactions" element={<Transactions />} />
             <Route path="settings" element={<Settings />} />
           </Route>
         </Routes>
