@@ -1,0 +1,92 @@
+[
+  {
+    "Id": 1,
+    "name": "Acme Corporation",
+    "email": "contact@acmecorp.com",
+    "phone": "(555) 123-4567",
+    "address": "123 Business Ave, Suite 100\nBusiness City, CA 90210",
+    "taxId": "12-3456789",
+    "invoiceCount": 2
+  },
+  {
+    "Id": 2,
+    "name": "TechStart Inc.",
+    "email": "hello@techstart.io",
+    "phone": "(555) 234-5678",
+    "address": "456 Innovation Drive\nTech Valley, CA 94000",
+    "taxId": "23-4567890",
+    "invoiceCount": 1
+  },
+  {
+    "Id": 3,
+    "name": "Global Marketing Solutions",
+    "email": "info@globalmarketing.com",
+    "phone": "(555) 345-6789",
+    "address": "789 Marketing Plaza, Floor 5\nMarketing City, NY 10001",
+    "taxId": "34-5678901",
+    "invoiceCount": 1
+  },
+  {
+    "Id": 4,
+    "name": "Creative Studios",
+    "email": "projects@creativestudios.com",
+    "phone": "(555) 456-7890",
+    "address": "321 Creative Lane\nArt District, CA 90028",
+    "taxId": "45-6789012",
+    "invoiceCount": 1
+  },
+  {
+    "Id": 5,
+    "name": "DataTech Solutions",
+    "email": "support@datatech.com",
+    "phone": "(555) 567-8901",
+    "address": "654 Data Center Blvd\nTech Hub, TX 75201",
+    "taxId": "56-7890123",
+    "invoiceCount": 1
+  },
+  {
+    "Id": 6,
+    "name": "Retail Express",
+    "email": "orders@retailexpress.com",
+    "phone": "(555) 678-9012",
+    "address": "987 Commerce Street\nRetail District, FL 33101",
+    "taxId": "67-8901234",
+    "invoiceCount": 1
+  },
+  {
+    "Id": 7,
+    "name": "Healthcare Plus",
+    "email": "admin@healthcareplus.org",
+    "phone": "(555) 789-0123",
+    "address": "147 Medical Center Drive\nHealthcare City, IL 60601",
+    "taxId": "78-9012345",
+    "invoiceCount": 1
+  },
+  {
+    "Id": 8,
+    "name": "EduTech Academy",
+    "email": "info@edutechacademy.edu",
+    "phone": "(555) 890-1234",
+    "address": "258 Education Boulevard\nLearning Town, MA 02101",
+    "taxId": "89-0123456",
+    "invoiceCount": 0
+  },
+  {
+    "Id": 9,
+    "name": "Green Energy Corp",
+    "email": "contact@greenenergy.com",
+    "phone": "(555) 901-2345",
+    "address": "369 Renewable Drive\nSustainable City, WA 98101",
+    "taxId": "90-1234567",
+    "invoiceCount": 0
+  },
+  {
+    "Id": 10,
+    "name": "Financial Advisors Group",
+    "email": "advisors@financialgroup.com",
+    "phone": "(555) 012-3456",
+    "address": "741 Investment Plaza, 10th Floor\nFinance District, NY 10005",
+    "taxId": "01-2345678",
+    "invoiceCount": 0
+  }
+]
