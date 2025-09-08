@@ -104,7 +104,12 @@ name={getTypeIcon(transaction.Type_c || transaction.type)}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-{format(new Date(transaction.Date_c || transaction.date), "MMM dd, yyyy")}
+{(() => {
+                          const dateValue = transaction.Date_c || transaction.date;
+                          if (!dateValue) return "N/A";
+                          const dateObj = new Date(dateValue);
+                          return isNaN(dateObj.getTime()) ? "N/A" : format(dateObj, "MMM dd, yyyy");
+                        })()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
 <StatusBadge status={transaction.Status_c || transaction.status} />

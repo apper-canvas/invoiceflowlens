@@ -75,7 +75,12 @@ ${(invoice.TotalAmount_c || invoice.total)?.toLocaleString()}
 <StatusBadge status={invoice.Status_c || invoice.status} />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-{format(new Date(invoice.IssueDate_c || invoice.issueDate), "MMM dd, yyyy")}
+{(() => {
+                          const dateValue = invoice.IssueDate_c || invoice.issueDate;
+                          if (!dateValue) return "N/A";
+                          const dateObj = new Date(dateValue);
+                          return isNaN(dateObj.getTime()) ? "N/A" : format(dateObj, "MMM dd, yyyy");
+                        })()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex items-center space-x-2">
