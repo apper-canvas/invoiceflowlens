@@ -13,15 +13,14 @@ const Layout = () => {
   const handleMobileMenuClose = () => {
     setIsMobileMenuOpen(false);
   };
-
   return (
-    <div className="min-h-screen bg-gray-50">
+<div className="min-h-screen bg-gray-50">
       <Sidebar isOpen={isMobileMenuOpen} onClose={handleMobileMenuClose} />
       
       <div className="lg:ml-80">
         <Header onMobileMenuToggle={handleMobileMenuToggle} />
         <main className="min-h-screen">
-          <Outlet />
+          <Outlet context={{ isMobileMenuOpen, handleMobileMenuToggle, handleMobileMenuClose }} />
         </main>
       </div>
     </div>
