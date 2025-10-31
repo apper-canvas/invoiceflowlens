@@ -1,12 +1,14 @@
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { useAuth } from "@/layouts/Root";
 import ApperIcon from "@/components/ApperIcon";
 import { cn } from "@/utils/cn";
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const { logout } = useAuth();
   const location = useLocation();
 
-const navigation = [
+  const navigation = [
     { name: "Dashboard", href: "/", icon: "LayoutDashboard" },
     { name: "Invoices", href: "/invoices", icon: "FileText" },
     { name: "Transactions", href: "/transactions", icon: "CreditCard" },
@@ -37,7 +39,7 @@ const navigation = [
           <NavLink
             key={item.name}
             to={item.href}
-            onClick={onClose}
+onClick={onClose}
             className={({ isActive }) =>
               cn(
                 "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200",
@@ -80,10 +82,7 @@ const navigation = [
             </div>
           </div>
           <button
-            onClick={() => {
-              const { ApperUI } = window.ApperSDK;
-              ApperUI.logout();
-            }}
+onClick={logout}
             className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
             title="Logout"
           >
@@ -96,7 +95,7 @@ const navigation = [
 
   return (
     <>
-      {/* Mobile overlay */}
+{/* Mobile overlay */}
       <div 
         className={cn(
           "fixed inset-0 z-50 lg:hidden transition-opacity duration-300",
