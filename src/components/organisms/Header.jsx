@@ -44,6 +44,15 @@ const Header = ({ onMobileMenuToggle, title = "Dashboard" }) => {
             className="hidden md:block w-80"
           />
           
+          <Button variant="outline" size="medium" className="hidden sm:flex">
+            <ApperIcon name="Download" size={18} className="mr-2" />
+            Export
+          </Button>
+          
+          <Button variant="primary" size="medium">
+            <ApperIcon name="Plus" size={18} className="mr-2" />
+            New Invoice
+          </Button>
         </div>
       </div>
     </header>
